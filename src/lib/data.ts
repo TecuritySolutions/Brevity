@@ -14,7 +14,7 @@ export const BRIEFS: Record<string, {
     meetings: [
       {
         title: 'Before your Sequoia call',
-        body: "Sequoia India closed their 9th fund last month — $2.85B, largest yet. Their last three SaaS bets have all been infra plays. The question they will quietly be asking: is your product layer or infrastructure? Frame your defensibility in infra terms. One sharp question to open with: "How are you thinking about the India-to-global GTM playbook differently in this fund vs the last?"",
+        body: "Sequoia India closed their 9th fund last month — $2.85B, largest yet. Their last three SaaS bets have all been infra plays. The question they will quietly be asking: is your product layer or infrastructure? Frame your defensibility in infra terms. One sharp question to open with: \"How are you thinking about the India-to-global GTM playbook differently in this fund vs the last?\"",
       },
       {
         title: 'Before dinner with Vikram',
