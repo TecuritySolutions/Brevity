@@ -20,14 +20,31 @@ export default function Invite() {
     }
   }
 
-  function submitEmail(e: React.FormEvent) {
+  async function submitEmail(e: React.FormEvent) {
     e.preventDefault();
     const v = email.trim();
     if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
       setEmailMsg({ t: "Enter a working email — we only write to the address that walks the talk.", c: 'err' });
       return;
     }
-    setEmailMsg({ t: "On the list. You'll hear from us before the next cohort opens.", c: 'ok' });
+    setEmailMsg({ t: 'Reserving your seat…', c: '' });
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: v }),
+      });
+      if (res.status === 409) {
+        setEmailMsg({ t: "You're already on the list. We'll reach out before the next cohort opens.", c: 'ok' });
+      } else if (res.ok) {
+        setEmailMsg({ t: "On the list. You'll hear from us before the next cohort opens.", c: 'ok' });
+        setEmail('');
+      } else {
+        setEmailMsg({ t: 'Something went wrong. Try again in a moment.', c: 'err' });
+      }
+    } catch {
+      setEmailMsg({ t: 'Something went wrong. Try again in a moment.', c: 'err' });
+    }
   }
 
   return (
