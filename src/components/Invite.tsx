@@ -36,8 +36,15 @@ export default function Invite() {
       });
       if (res.status === 409) {
         setEmailMsg({ t: "You're already on the list. We'll reach out before the next cohort opens.", c: 'ok' });
+      } else if (res.status === 400) {
+        const body = await res.json();
+        if (body.error === 'temp_email') {
+          setEmailMsg({ t: "Temporary email addresses aren't accepted. Use your real inbox.", c: 'err' });
+        } else {
+          setEmailMsg({ t: "Enter a working email — we only write to the address that walks the talk.", c: 'err' });
+        }
       } else if (res.ok) {
-        setEmailMsg({ t: "On the list. You'll hear from us before the next cohort opens.", c: 'ok' });
+        setEmailMsg({ t: "Check your inbox — we've sent you a verification link.", c: 'ok' });
         setEmail('');
       } else {
         setEmailMsg({ t: 'Something went wrong. Try again in a moment.', c: 'err' });
@@ -68,7 +75,7 @@ export default function Invite() {
             </div>
 
             <div style={{ marginTop: 28, paddingTop: 24, borderTop: '1px solid var(--line-soft)' }}>
-              <div className="label" style={{ marginBottom: 12 }}>NO INVITE? · JOIN THE WAITLIST</div>
+              <div className="label" style={{ marginBottom: 12, fontSize: 23 }}>NO INVITE? · JOIN THE WAITLIST</div>
               <form className="invite-input" onSubmit={submitEmail}>
                 <input
                   value={email}
@@ -85,12 +92,12 @@ export default function Invite() {
 
           <div className="invite-box">
             <div className="iblabel">Enter your invitation code</div>
-            <div className="ibtitle">Admission</div>
+            <div className="ibtitle">Admission: <span style={{ color: 'var(--gold)' }}>Starting-Soon</span></div>
             <form className="invite-input" onSubmit={submit}>
               <input
                 value={code}
                 onChange={e => setCode(e.target.value)}
-                placeholder="e.g. RAJAN-087"
+                placeholder="e.g. Brevity-001"
                 maxLength={20}
               />
               <button type="submit">Admit →</button>
@@ -101,8 +108,8 @@ export default function Invite() {
               fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, letterSpacing: '.14em',
               textTransform: 'uppercase', color: 'var(--grey)'
             }}>
-              Try: <span style={{ color: 'var(--gold)' }}>RAJAN-087</span>&nbsp;·&nbsp;
-              <span style={{ color: 'var(--gold)' }}>ISPIRT-001</span>
+              {/* Try: <span style={{ color: 'var(--gold)' }}>RAJAN-087</span>&nbsp;·&nbsp;
+              <span style={{ color: 'var(--gold)' }}>ISPIRT-001</span> */}
             </div>
           </div>
         </div>
